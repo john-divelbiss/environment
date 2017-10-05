@@ -16,16 +16,18 @@ function git_color {
 
 function git_branch {
 
+    local git_name="$(basename `git rev-parse --show-toplevel` 2> /dev/null)"
+
 	local git_status="$(git status 2> /dev/null)"
 	local on_branch="On branch ([^${IFS}]*)"
 	local on_commit="HEAD detached at ([^${IFS}]*)"
 
 	if [[ $git_status =~ $on_branch ]]; then
 		local branch=${BASH_REMATCH[1]}
-		echo "($branch)"
+		echo "($git_name - $branch)"
 	elif [[ $git_status =~ $on_commit ]]; then
 		local commit=${BASH_REMATCH[1]}
-		echo "($commit)"
+		echo "($git_name - $commit)"
 	fi
 }
 
@@ -33,14 +35,20 @@ function git_repo {
 #	if [ ! -d ".git" ]; then
  #       return
 #	fi
+	local git_name="$(git rev-parse --show-toplevel 2> /dev/null)"
 
-    basename `git rev-parse --show-toplevel`
+    echo "($git_name)"
+#    basename `git rev-parse --show-toplevel`
+}
+
+function repo_information {
+    git_repo
+    git_branch
 }
 
 function set_git_prompt {
 	PS1="\[\$(git_color)\]"
-	PS1+="\n\$(git_repo) - \$(git_branch)"
-
+	PS1+="\n\$(git_branch)"
 	PS1+="\[$ANSI_WHITE\]\n[\w]"  
 	PS1+="\[$ANSO_BLUE\]:\[$ANSI_RESET\] "
 	export PS1
