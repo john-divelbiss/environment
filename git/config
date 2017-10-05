@@ -1,0 +1,9 @@
+Host github.com
+    HostName github.com
+    User john.divelbiss@foundant.com
+    IdentityFile ~/.ssh/id_rsa_john-divelbiss
+
+Host github.com-personal
+    HostName github.com
+    User jdivelbiss75@gmail.com
+    IdentityFile ~/.ssh/id_rsa-personal

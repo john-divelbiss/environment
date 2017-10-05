@@ -1,0 +1,66 @@
+#!/bin/bash
+
+function git_color {
+	local git_status="$(git status 2> /dev/null)"
+
+	if [[ ! $git_status =~ "working directory clean" ]]; then
+		echo -e $ANSI_RED
+	elif [[ $git_status =~ "Your branch is ahead of" ]]; then
+		echo -e $ANSI_YELLOW
+	elif [[ $git_status =~ "nothing to commit" ]]; then
+		echo -e $ANSI_GREEN
+	else
+		echo -e $COLOR_CYAN
+	fi
+}
+
+function git_branch {
+
+	local git_status="$(git status 2> /dev/null)"
+	local on_branch="On branch ([^${IFS}]*)"
+	local on_commit="HEAD detached at ([^${IFS}]*)"
+
+	if [[ $git_status =~ $on_branch ]]; then
+		local branch=${BASH_REMATCH[1]}
+		echo "($branch)"
+	elif [[ $git_status =~ $on_commit ]]; then
+		local commit=${BASH_REMATCH[1]}
+		echo "($commit)"
+	fi
+}
+
+function git_repo {
+#	if [ ! -d ".git" ]; then
+ #       return
+#	fi
+
+    basename `git rev-parse --show-toplevel`
+}
+
+function set_git_prompt {
+	PS1="\[\$(git_color)\]"
+	PS1+="\n\$(git_repo) - \$(git_branch)"
+
+	PS1+="\[$ANSI_WHITE\]\n[\w]"  
+	PS1+="\[$ANSO_BLUE\]:\[$ANSI_RESET\] "
+	export PS1
+}
+
+function config_repo {
+
+	if [ ! -d ".git" ]; then
+		echo "Unable to initialize repo...not in a repo folder"
+        return
+	fi
+
+    if [ "$1" = "-p" ]; then
+		echo "Initializing Personal Repo"
+    elif [ "$1" = "-f" ]; then	
+		echo "Initializing Foundant Repo"
+    else
+        echo "Unable to determine repo type"
+		echo "-p for personal repos"
+		echo "-f for foundant repos"
+    fi
+
+}
