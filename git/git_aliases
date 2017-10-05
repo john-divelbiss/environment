@@ -55,8 +55,12 @@ function config_repo {
 
     if [ "$1" = "-p" ]; then
 		echo "Initializing Personal Repo"
+        `git config --local user.email "jdivelbiss75@gmail.com"`
+
     elif [ "$1" = "-f" ]; then	
 		echo "Initializing Foundant Repo"
+       `git config --local user.email "john.divelbiss@foundant.com"`
+
     else
         echo "Unable to determine repo type"
 		echo "-p for personal repos"
