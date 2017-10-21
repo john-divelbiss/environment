@@ -74,8 +74,6 @@ if($#package >= 0) {
     install_git();
 }
 
-print "Sourcing .bashrc";
-system(". ~/.bashrc");
 
 =item install_bash()
 
@@ -110,6 +108,10 @@ sub install_bash {
 
     print "Copying .bash_aliases...\n";
     copy(cwd . "/env/.bash_aliases", $ENV{"HOME"} . "/.bash_aliases") or die "\n\nFailed to copy /env/.bash_aliases!!!\n"; 
+
+    print "Copying ps1.prompt...\n";
+    copy(cwd . "/env/ps1.prompt", $ENV{"HOME"} . "/.config/ps1.prompt") or die "\n\nFailed to copy /env/ps1.prompt!!!\n"; 
+
 }
 
 sub install_vim {

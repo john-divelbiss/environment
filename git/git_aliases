@@ -16,7 +16,7 @@ function git_color {
 
 function git_branch {
 
-    local git_name="$(basename `git rev-parse --show-toplevel` 2> /dev/null)"
+    local git_name="$(basename `git rev-parse --show-toplevel 2> /dev/null` 2> /dev/null)"
 
 	local git_status="$(git status 2> /dev/null)"
 	local on_branch="On branch ([^${IFS}]*)"
@@ -31,48 +31,19 @@ function git_branch {
 	fi
 }
 
-function git_repo {
-#	if [ ! -d ".git" ]; then
- #       return
-#	fi
-	local git_name="$(git rev-parse --show-toplevel 2> /dev/null)"
-
-    echo "($git_name)"
-#    basename `git rev-parse --show-toplevel`
-}
-
-function repo_information {
-    git_repo
-    git_branch
-}
-
 function set_git_prompt {
-	PS1="\[\$(git_color)\]"
-	PS1+="\n\$(git_branch)"
+	PS1="\[\$(git_color)\]"			
+	PS1+="\n\$(git_branch)"        
 	PS1+="\[$ANSI_WHITE\]\n[\w]"  
 	PS1+="\[$ANSO_BLUE\]:\[$ANSI_RESET\] "
 	export PS1
 }
 
-function config_repo {
-
-	if [ ! -d ".git" ]; then
-		echo "Unable to initialize repo...not in a repo folder"
-        return
-	fi
-
-    if [ "$1" = "-p" ]; then
-		echo "Initializing Personal Repo"
-        `git config --local user.email "jdivelbiss75@gmail.com"`
-
-    elif [ "$1" = "-f" ]; then	
-		echo "Initializing Foundant Repo"
-       `git config --local user.email "john.divelbiss@foundant.com"`
-
-    else
-        echo "Unable to determine repo type"
-		echo "-p for personal repos"
-		echo "-f for foundant repos"
+function reset_prompt {
+    if [ -f "$HOME/.config/ps1.prompt" ]; then
+        PS1=`cat $HOME/.config/ps1.prompt`
+        PS1+=" "
+        echo "New Prompt: $PS1"
+        export PS1
     fi
-
 }
