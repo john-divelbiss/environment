@@ -5,6 +5,10 @@ INSTALL_PATH=${HOME}/src/environment
 ALIAS_PATH=${HOME}/.bash_aliases
 GIT_ALIAS_PATH=${HOME}/.config/git_aliases
 
+#export ARDUINO_DIR=/opt/arduino-1.8.5
+#export ARDMK_DIR=/usr
+#export AVR_TOOLS_DIR=/usr
+
 # Alias definitions.
 alias ed_alias='vim ${ALIAS_PATH}'
 alias ed_git='vim ${GIT_ALIAS_PATH}'
